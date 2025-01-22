@@ -5,7 +5,7 @@ resource "time_sleep" "wait_8_seconds" {
 }
 
 output "resource_group_name" {
-    value       = "resource_group_name"
+    value       = var.resource_group_name
 }
 
 output "resource_group_id" {
@@ -52,7 +52,7 @@ output "cos_instance_guid" {
 }
 
 output "cos_instance_name" {
-    value       = "cos_instance_name"
+    value       = var.cos_instance_name
 }
 
 output "cos_instance_crn" {
@@ -61,19 +61,19 @@ output "cos_instance_crn" {
 
 ## COS Buckets
 output "log_archive_cos_bucket_name" {
-    value       = "log_archive_cos_bucket_name"
+    value       = var.log_archive_cos_bucket_name
 }
 
 output "at_cos_target_bucket_name" {
-    value       = "at_cos_target_bucket_name"
+    value       = var.at_cos_target_bucket_name
 }
 
 output "cloud_log_data_bucket_name" {
-    value       = "cloud_log_data_bucket_name"
+    value       = var.cloud_log_data_bucket_name
 }
 
 output "cloud_log_metrics_bucket_name" {
-    value       = "cloud_log_metrics_bucket_name"
+    value       = var.cloud_log_metrics_bucket_name
 }
 
 ## Activity Tracker
