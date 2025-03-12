@@ -1,7 +1,17 @@
+# read ssh keys available in the cloud under this account - don't care
+# about the keys just want to force the terraform to login to the cloud.
+data "ibm_is_ssh_keys" "mykeys" {
+}
 
+locals {
+    howmanykeys = length(data.ibm_is_ssh_keys.mykeys.keys)
+}
+output "mykeys" {
+    value = "There are ${local.howmanykeys} ssh keys defined by the account owning this api key."
+}
 
-resource "time_sleep" "wait_8_seconds" {
-    create_duration = "8s"
+resource "time_sleep" "wait_3_seconds" {
+    create_duration = "3s"
 }
 
 output "resource_group_name" {
@@ -23,6 +33,24 @@ output "cloud_logs_guid" {
 
 output "cloud_logs_name" {
     value       = "cloud_logs_name"
+}
+
+output "cloud_logs_resource_group_id" {
+    value       = "cloud_logs_resource_group_id"
+}
+
+output "cloud_logs_ingress_endpoint" {
+    value       = "cloud_logs_ingress_endpoint"
+}
+
+output "cloud_logs_ingress_private_endpoint" {
+    value       = "cloud_logs_ingress_private_endpoint"
+}
+
+
+## Cloud logs policies
+output "logs_policies_details" {
+    value       = "logs_policies_details"
 }
 
 ## Cloud Monitoring
@@ -92,4 +120,14 @@ output "kms_key_rings" {
 
 output "kms_keys" {
     value       = "kms_keys"
+}
+
+## Metrics Routing
+
+output "metrics_router_targets" {
+    value       = "metrics_router_targets"
+}
+
+output "metrics_router_routes" {
+    value       = "metrics_router_routes"
 }

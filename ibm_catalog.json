@@ -123,7 +123,20 @@
                 {
                   "dependency_output": "kms_instance_crn",
                   "version_input": "existing_kms_instance_crn"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
                 }
+              ],
+              "ignore_auto_referencing": [
+                "*"
               ]
             },
             {
@@ -135,7 +148,7 @@
               "id": "9fcd1945-8ebc-4072-85dc-6400653e7077",
               "input_mapping": [
                 {
-                  "dependency_output": "workload_resource_group_name",
+                  "dependency_output": "observability_resource_group_name",
                   "version_input": "resource_group_name"
                 },
                 {
@@ -143,9 +156,17 @@
                   "value": true
                 },
                 {
-                  "dependency_input": "existing_workload_resource_group_name",
+                  "dependency_input": "resource_group_name",
                   "value": "Default"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
                 }
+              ],
+              "ignore_auto_referencing": [
+                "*"
               ],
               "optional": true,
               "on_by_default": true,
@@ -158,32 +179,68 @@
               "key": "ibmcloud_api_key",
               "required": true
             },
+
             {
-              "key": "prefix",
-              "required": true
+              "key": "enable_platform_metrics",
+              "required": false,
+              "default_value": false
             },
             {
-              "key": "resource_group_name",
-              "required": false
+              "key": "enable_platform_logs",
+              "required": false,
+              "default_value": false
+            },
+            {
+              "key": "provider_visibility",
+              "required": false,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To not use any prefix value, you can enter the string `__NULL__`."
             },
             {
               "key": "use_existing_resource_group",
               "required": false
             },
             {
-              "key": "region",
-              "required": true,
+              "key": "resource_group_name",
+              "required": false
+            },
+            {
               "custom_config": {
-                "type": "vpc_region",
+                "type": "region",
                 "grouping": "deployment",
                 "original_grouping": "deployment",
                 "config_constraints": {
-                  "generationType": "2"
+                  "showKinds": [
+                    "region"
+                  ]
                 }
-              }
+              },
+              "key": "region",
+              "required": true
             },
             {
               "key": "cloud_logs_provision",
+              "required": false
+            },
+            {
+              "key": "cloud_logs_policies",
               "required": false
             },
             {
@@ -196,6 +253,10 @@
             },
             {
               "key": "cloud_logs_access_tags",
+              "required": false
+            },
+            {
+              "key": "manage_log_archive_cos_bucket",
               "required": false
             },
             {
@@ -223,10 +284,6 @@
                   "value": "90"
                 }
               ]
-            },
-            {
-              "key": "enable_platform_logs",
-              "required": false
             },
             {
               "key": "logs_routing_tenant_regions",
@@ -291,8 +348,66 @@
               "required": false
             },
             {
+              "key": "cos_resource_group_name",
+              "required": false
+            },
+            {
               "key": "cos_instance_name",
               "required": false
+            },
+            {
+              "key": "cos_region",
+              "required": false,
+              "options": [
+                {
+                  "displayname": "Use Observability Instances Region",
+                  "value": "__NULL__"
+                },
+                {
+                  "displayname": "au-syd",
+                  "value": "au-syd"
+                },
+                {
+                  "displayname": "br-sao",
+                  "value": "br-sao"
+                },
+                {
+                  "displayname": "ca-tor",
+                  "value": "ca-tor"
+                },
+                {
+                  "displayname": "eu-de",
+                  "value": "eu-de"
+                },
+                {
+                  "displayname": "eu-es",
+                  "value": "eu-es"
+                },
+                {
+                  "displayname": "eu-fr2",
+                  "value": "eu-fr2"
+                },
+                {
+                  "displayname": "eu-gb",
+                  "value": "eu-gb"
+                },
+                {
+                  "displayname": "jp-osa",
+                  "value": "jp-osa"
+                },
+                {
+                  "displayname": "jp-tok",
+                  "value": "jp-tok"
+                },
+                {
+                  "displayname": "us-east",
+                  "value": "us-east"
+                },
+                {
+                  "displayname": "us-south",
+                  "value": "us-south"
+                }
+              ]
             },
             {
               "key": "cos_instance_tags",
@@ -300,6 +415,14 @@
             },
             {
               "key": "cos_instance_access_tags",
+              "required": false
+            },
+            {
+              "key": "at_cos_bucket_retention_policy",
+              "required": false
+            },
+            {
+              "key": "cloud_log_data_bucket_retention_policy",
               "required": false
             },
             {
@@ -517,6 +640,16 @@
               "required": false
             },
             {
+              "key": "ibmcloud_cos_api_key",
+              "required": false,
+              "default_value": "__NULL__"
+            },
+            {
+              "key": "ibmcloud_kms_api_key",
+              "required": false,
+              "default_value": "__NULL__"
+            },
+            {
               "key": "kms_endpoint_type",
               "required": false,
               "options": [
@@ -531,35 +664,11 @@
               ]
             },
             {
-              "key": "cos_region",
-              "required": false,
-              "custom_config": {
-                "type": "vpc_region",
-                "grouping": "deployment",
-                "original_grouping": "deployment",
-                "config_constraints": {
-                  "generationType": "2"
-                }
-              }
-            },
-            {
-              "key": "cos_resource_group_name",
+              "key": "enable_metrics_routing_to_cloud_monitoring",
               "required": false
             },
             {
-              "key": "enable_platform_metrics",
-              "required": false
-            },
-            {
-              "key": "ibmcloud_cos_api_key",
-              "required": false
-            },
-            {
-              "key": "ibmcloud_kms_api_key",
-              "required": false
-            },
-            {
-              "key": "manage_log_archive_cos_bucket",
+              "key": "metrics_router_routes",
               "required": false
             }
           ],
@@ -649,7 +758,7 @@
               "description": "The name of the Cloud logs metrics COS bucket"
             }
           ],
-          "install_type": "extension"
+          "install_type": "fullstack"
         }
       ]
     }
