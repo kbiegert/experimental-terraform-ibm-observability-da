@@ -40,14 +40,16 @@
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Writer",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ]
+              ],
+              "notes": "Normally you would not need Editor but in this case it is required."
             },
             {
               "service_name": "hs-crypto",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ]
+              ],
+              "notes": "If the crypto service is not enabled within the configuration, then this permmission is not needed."
             },
             {
               "service_name": "kms",
@@ -75,7 +77,8 @@
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ]
+              ],
+              "notes": "This permission level is critical."
             }
           ],
           "architecture": {
